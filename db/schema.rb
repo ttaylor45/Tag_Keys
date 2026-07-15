@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_225002) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_233842) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_225002) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "game_genres", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id", "genre_id"], name: "index_game_genres_on_game_id_and_genre_id", unique: true
+    t.index ["game_id"], name: "index_game_genres_on_game_id"
+    t.index ["genre_id"], name: "index_game_genres_on_genre_id"
   end
 
   create_table "games", force: :cascade do |t|
@@ -65,5 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_225002) do
     t.index ["name"], name: "index_provinces_on_name", unique: true
   end
 
+  add_foreign_key "game_genres", "games"
+  add_foreign_key "game_genres", "genres"
   add_foreign_key "games", "categories"
 end

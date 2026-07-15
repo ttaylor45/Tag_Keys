@@ -1,4 +1,7 @@
 class Genre < ApplicationRecord
+  has_many :game_genres, dependent: :destroy
+  has_many :games, through: :game_genres
+
   validates :name, presence: true, uniqueness: { case_sesitive: false }
   validates :description, presence: true
 end
