@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # README
 
 This README would normally document whatever steps are necessary to get the
@@ -97,4 +97,4 @@ o One category can have many games.
 # Payments
 • Stores payment details for orders.
 o One payment belongs to one order.
->>>>>>> 23fd708dffffaa84a81506806ec1ec73bf6f6f28
+
