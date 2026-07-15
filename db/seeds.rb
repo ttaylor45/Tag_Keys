@@ -133,3 +133,61 @@ categories.each do |attributes|
 end
 
 puts "Seeded #{Category.count} categories."
+
+genres = [
+  {
+    name: "Adventure",
+    description: "Games focused on exploration, story and discovery."
+  },
+  {
+    name: "Action",
+    description: "Games focused on fast-paced combat or player reactions."
+  },
+  {
+    name: "RPG",
+    description: "Role-playing games that features character progression or story choices."
+  },
+  {
+    name: "Strategy",
+    description: "Games that is focused on planning, resource management, and tactical decisions."
+  },
+  {
+    name: "Sports",
+    description: "Games based on competitive sports and athletic activities."
+  },
+  {
+    name: "Racing",
+    description: "Vehicle racing and driving competition."
+  },
+  {
+    name: "Puzzle",
+    description: "Games that tailors to logic, problem solving, and challenges."
+  },
+  {
+    name: "Survival",
+    description: "Focused on resources gathering, crafting, and staying alive."
+  },
+  {
+    name: "Horror",
+    description: "Games that is designed around suspense, fear, and jumpscares!"
+  },
+  {
+    name: "FPS",
+    description: "First-Person-Shooter games on ranged combat."
+  },
+  {
+    name: "Open World",
+    description: "This provides large worlds with flexible explorations."
+  },
+  {
+    name: "Indie",
+    description: "Games created by developers or small studios."
+  }
+]
+
+genres.each do |attributes|
+  genre = Genre.find_or_initialize_by(name: attributes[:name])
+  genre.update!(attributes)
+end
+
+puts "Seeded #{Genre.count} genres."
