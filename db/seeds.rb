@@ -111,3 +111,25 @@ provinces.each do |attributes|
 end
 
 puts "Seeded #{Province.count} provinces and territories."
+
+categories = [
+  {
+    name: "Base Game",
+    description: "Just a regular game with nothing attached"
+  },
+  {
+    name: "DLC",
+    description: "Downloadable content that will extend the game"
+  },
+    {
+    name: "Bundle",
+    description: "A collection of steam games or seperate game content"
+  }
+]
+
+categories.each do |attributes|
+  category = Category.find_or_initialize_by(name: attributes[:name])
+  category.update!(attributes)
+end
+
+puts "Seeded #{Category.count} categories."
