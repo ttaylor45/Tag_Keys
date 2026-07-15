@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  steam_app_id: 1
+  category: one
+  title: MyString
+  description: MyText
+  price: 9.99
+  sale_price: 9.99
+  developer: MyString
+  publisher: MyString
+  release_date: 2026-07-15
+  active: false
+  featured: false
+
+two:
+  steam_app_id: 1
+  category: two
+  title: MyString
+  description: MyText
+  price: 9.99
+  sale_price: 9.99
+  developer: MyString
+  publisher: MyString
+  release_date: 2026-07-15
+  active: false
+  featured: false

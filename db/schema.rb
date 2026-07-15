@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_221654) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_225002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_221654) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.string "developer", null: false
+    t.boolean "featured", default: false, null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.string "publisher", null: false
+    t.date "release_date"
+    t.decimal "sale_price", precision: 10, scale: 2
+    t.integer "steam_app_id", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_games_on_active"
+    t.index ["category_id"], name: "index_games_on_category_id"
+    t.index ["featured"], name: "index_games_on_featured"
+    t.index ["steam_app_id"], name: "index_games_on_steam_app_id", unique: true
+    t.index ["title"], name: "index_games_on_title"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -43,4 +64,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_221654) do
     t.index ["abbreviation"], name: "index_provinces_on_abbreviation", unique: true
     t.index ["name"], name: "index_provinces_on_name", unique: true
   end
+
+  add_foreign_key "games", "categories"
 end
