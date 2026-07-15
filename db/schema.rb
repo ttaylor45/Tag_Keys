@@ -10,8 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 0) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_211914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "provinces", force: :cascade do |t|
+    t.string "abbreviation", null: false
+    t.datetime "created_at", null: false
+    t.decimal "gst_rate", precision: 5, scale: 4, default: "0.0", null: false
+    t.decimal "hst_rate", precision: 5, scale: 4, default: "0.0", null: false
+    t.string "name", null: false
+    t.decimal "pst_rate", precision: 5, scale: 4, default: "0.0", null: false
+    t.datetime "updated_at", null: false
+    t.index ["abbreviation"], name: "index_provinces_on_abbreviation", unique: true
+    t.index ["name"], name: "index_provinces_on_name", unique: true
+  end
 end
