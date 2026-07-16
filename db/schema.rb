@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_16_162913) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_16_164623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id", "game_id"], name: "index_cart_items_on_cart_id_and_game_id", unique: true
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["game_id"], name: "index_cart_items_on_game_id"
+  end
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -105,6 +116,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_162913) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "games"
   add_foreign_key "carts", "users"
   add_foreign_key "game_genres", "games"
   add_foreign_key "game_genres", "genres"

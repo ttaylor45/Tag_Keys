@@ -2,6 +2,7 @@ class Game < ApplicationRecord
   belongs_to :category
   has_many :game_genres, dependent: :destroy
   has_many :genres, through: :game_genres
+  has_many :cart_items, dependent: :restrict_with_exception
 
   validates :steam_app_id, presence: true, uniqueness: true, numericality: { only_integer: true, greater_than: 0 }
   validates :title, :description, :developer, :publisher, presence: true
