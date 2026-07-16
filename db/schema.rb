@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_233842) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_16_162252) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -75,7 +75,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_233842) do
     t.index ["name"], name: "index_provinces_on_name", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "postal_code"
+    t.bigint "province_id"
+    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
+    t.integer "role", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.string "username", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["province_id"], name: "index_users_on_province_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
   add_foreign_key "game_genres", "games"
   add_foreign_key "game_genres", "genres"
   add_foreign_key "games", "categories"
+  add_foreign_key "users", "provinces"
 end
