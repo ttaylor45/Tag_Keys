@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_16_164623) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_16_180740) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,6 +51,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_164623) do
     t.index ["genre_id"], name: "index_game_genres_on_genre_id"
   end
 
+  create_table "game_keys", force: :cascade do |t|
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.bigint "order_item_id", null: false
+    t.datetime "sold_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_game_keys_on_code", unique: true
+    t.index ["game_id"], name: "index_game_keys_on_game_id"
+    t.index ["order_item_id"], name: "index_game_keys_on_order_item_id"
+    t.index ["status"], name: "index_game_keys_on_status"
+  end
+
   create_table "games", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.bigint "category_id", null: false
@@ -79,6 +93,70 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_164623) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.decimal "line_total", precision: 10, scale: 2, null: false
+    t.bigint "order_id", null: false
+    t.string "product_title", null: false
+    t.integer "quantity", null: false
+    t.decimal "unit_price", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_order_items_on_game_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "address_line_1", null: false
+    t.string "address_line_2", null: false
+    t.string "city", null: false
+    t.datetime "created_at", null: false
+    t.decimal "grand_total", precision: 10, scale: 2, null: false
+    t.decimal "gst_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "gst_rate", precision: 5, scale: 4, default: "0.0", null: false
+    t.decimal "hst_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "hst_rate", precision: 5, scale: 4, default: "0.0", null: false
+    t.string "order_number", null: false
+    t.datetime "paid_at"
+    t.string "postal_code", null: false
+    t.bigint "province_id", null: false
+    t.string "province_name", null: false
+    t.decimal "pst_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "pst_rate", precision: 5, scale: 4, default: "0.0", null: false
+    t.integer "status", default: 0, null: false
+    t.decimal "subtotal", precision: 10, scale: 2, null: false
+    t.decimal "tax_total", precision: 10, scale: 2, default: "0.0", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["order_number"], name: "index_orders_on_order_number", unique: true
+    t.index ["province_id"], name: "index_orders_on_province_id"
+    t.index ["status"], name: "index_orders_on_status"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "page_contents", force: :cascade do |t|
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.string "page_key", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_key"], name: "index_page_contents_on_page_key", unique: true
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.bigint "order_id", null: false
+    t.datetime "paid_at"
+    t.string "provider", null: false
+    t.string "provider_customer_id"
+    t.string "provider_payment_id"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id", unique: true
+    t.index ["provider_payment_id"], name: "index_payments_on_provider_payment_id", unique: true
   end
 
   create_table "provinces", force: :cascade do |t|
@@ -121,6 +199,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_164623) do
   add_foreign_key "carts", "users"
   add_foreign_key "game_genres", "games"
   add_foreign_key "game_genres", "genres"
+  add_foreign_key "game_keys", "games"
+  add_foreign_key "game_keys", "order_items"
   add_foreign_key "games", "categories"
+  add_foreign_key "order_items", "games"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "provinces"
+  add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders"
   add_foreign_key "users", "provinces"
 end

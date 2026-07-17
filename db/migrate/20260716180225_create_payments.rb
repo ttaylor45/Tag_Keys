@@ -1,7 +1,7 @@
 class CreatePayments < ActiveRecord::Migration[8.1]
   def change
     create_table :payments do |t|
-      t.references :order, null: false, foreign_key: true
+      t.references :order, null: false, foreign_key: true, index: false
       t.string :provider, null: false
       t.string :provider_customer_id
       t.string :provider_payment_id
@@ -12,7 +12,7 @@ class CreatePayments < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :payments, order_id, unique: true
-    add_index :payments, provider_payment_id, unique: true
+    add_index :payments, :order_id, unique: true
+    add_index :payments, :provider_payment_id, unique: true
   end
 end

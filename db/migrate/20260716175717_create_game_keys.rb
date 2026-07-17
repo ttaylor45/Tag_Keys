@@ -11,6 +11,6 @@ class CreateGameKeys < ActiveRecord::Migration[8.1]
     end
 
     add_index :game_keys, :code, unique: true
-    add_index :game_keys, :staus
+    add_index :game_keys, :status
   end
 end

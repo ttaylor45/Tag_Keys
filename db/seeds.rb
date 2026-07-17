@@ -191,3 +191,23 @@ genres.each do |attributes|
 end
 
 puts "Seeded #{Genre.count} genres."
+
+page_contents = [
+  {
+    page_key: "about",
+    title: "About TAG Keys",
+    body: "TAG Keys is a Canadian digital Steam game-key store."
+  },
+  {
+    page_key: "contact",
+    title: "Contact TAG Keys",
+    body: "Contact information will be updated through the administration area."
+  }
+]
+
+page_contents.each do |attributes|
+  page = PageContent.find_or_initialize_by(page_key: attributes[:page_key])
+  page.update!(attributes)
+end
+
+puts "Seeded #{PageContent.count} editable pages."
