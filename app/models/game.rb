@@ -6,7 +6,7 @@ class Game < ApplicationRecord
   has_many :order_items, dependent: :restrict_with_exception
   has_many :game_keys, dependent: :restrict_with_exception
 
-  validates :steam_app_id, presence: true, uniqueness: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :steam_app_id, uniqueness: true, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :title, :description, :developer, :publisher, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :sale_price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
