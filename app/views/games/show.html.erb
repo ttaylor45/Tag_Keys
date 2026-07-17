@@ -1,0 +1,45 @@
+<article class="game-details">
+  <h1><%= @game.tile %></h1>
+
+  <% if @game.category.present? %>
+  <p>Category: <%= @game.category.name %></p>
+  <% end %>
+
+  <% if @game.genres.any? %>
+  <p> Genres: <%= @game.genres.map(&:name).join(", ")%></p>
+  <% end %>
+
+  <% if @game.developer.present? %>
+  <p>Developer: <%= @game.developer%></p>
+  <% end %>
+
+  <% if @game.publisher.present? %>
+  <p>Publisher: <%= @game.publisher %></p>
+  <% end %>
+
+  <% if @game.release_date.present? %>
+  <p>Release Date: <%= @game.release_date.strtim("%B %-d, %Y") %></p>
+  <% end %>
+
+  <div>
+    <p>Description: <%= @game.description %></p>
+  </div>
+
+  <p>
+    <% if @game.on_sale? %>
+    <span>
+      Regular Price: <del> <%= number_to_currency(@game.price) %></del>
+    </span>
+
+    <span>
+      Sale Price: <%= number_to_currency(@game.current_price)%>
+    </span>
+    <% else %>
+    <span>
+      Price: <%= number_to_currency(@game.current_price) %>
+    </span>
+    <% end %>
+  </p>
+
+  <%= link_to "Back to Games", games_path%>
+</article>

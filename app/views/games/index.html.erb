@@ -1,0 +1,40 @@
+<h1>Games</h1>
+<% if @games.any? %>
+
+<div class="games">
+
+  <% @games.each do |game| %>
+
+  <article class="game-card">
+    <h2>
+      <%= link_to game.title, game_path(game) %>
+    </h2>
+
+    <% if game.category.present? %>
+      <p> Category: <%= game.category.name%></p>
+      <% end %>
+
+      <% if game.genres.any? %>
+      <p> Genres: <%= game.genres.map(&:name).join(", ")%></p>
+      <% end %>
+
+      <% if game.description.present? %>
+      <p><%= truncate(game.description, length: 160) %></p>
+      <% end %>
+
+      <p> <% if game.on_sale? %>
+      <span>
+        Regular price: <del> <%= number_to_currency(game.price) %></del>
+      </span>
+        Sale price: <%= number_to_currency(game.current_price)%>
+        <% else %>
+          <%= number_to_currency(game.current_price) %>
+        <% end %>
+      </p>
+      <%= link_to "View Game", game_path(game) %>
+  </article>
+  <% end %>
+</div>
+<% else %>
+  <p>No games are available.</p>
+<% end %>

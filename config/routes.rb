@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "games/index"
+  get "games/show"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -12,4 +14,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "storefront#index"
+
+  resources :games, only: [ :index, :show ]
 end
