@@ -1,11 +1,19 @@
 <nav>
-  <% link_to "Tag Keys", root_path %>
+  <%= link_to "Tag Keys", root_path %>
 
   <ul>
     <li><%= link_to "Home", root_path %></li>
     <li>Games</li>
-    <li>Categories</li>
+    <li>Categories </li>
     <li>cart</li>
-    <li>login</li>
+
+    <% if user_signed_in? %>
+    <li>Cart</li>
+    <li> Signed in as <%= current_user.username %></li>
+    <li> <%= button_to "log out", destroy_user_session_path, method: :delete %></li>
+    <% else %>
+    <li> <%= link_to "Register", new_user_registration_path %></li>
+    <li><%= link_to "log in", new_user_session_path %></li>
+    <% end %>
   </ul>
 </nav>
