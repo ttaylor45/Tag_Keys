@@ -1,40 +1,80 @@
 <h1>Games</h1>
-<% if @games.any? %>
 
-<div class="games">
+<nav class="category-navigation">
+  <h2>Browse by Category</h2>
 
-  <% @games.each do |game| %>
+  <%= link_to "All Games",
+              games_path,
+              class: @selected_category.nil? ? "active-category" : nil %>
 
-  <article class="game-card">
-    <h2>
-      <%= link_to game.title, game_path(game) %>
-    </h2>
-
-    <% if game.category.present? %>
-      <p> Category: <%= game.category.name%></p>
-      <% end %>
-
-      <% if game.genres.any? %>
-      <p> Genres: <%= game.genres.map(&:name).join(", ")%></p>
-      <% end %>
-
-      <% if game.description.present? %>
-      <p><%= truncate(game.description, length: 160) %></p>
-      <% end %>
-
-      <p> <% if game.on_sale? %>
-      <span>
-        Regular price: <del> <%= number_to_currency(game.price) %></del>
-      </span>
-        Sale price: <%= number_to_currency(game.current_price)%>
-        <% else %>
-          <%= number_to_currency(game.current_price) %>
-        <% end %>
-      </p>
-      <%= link_to "View Game", game_path(game) %>
-  </article>
+  <% @categories.each do |category| %>
+    <%= link_to category.name,
+                games_path(category_id: category.id),
+                class: @selected_category == category ? "active-category" : nil %>
   <% end %>
-</div>
+</nav>
+
+<% if @selected_category.present? %>
+  <h2><%= @selected_category.name %> Games</h2>
 <% else %>
-  <p>No games are available.</p>
+  <h2>All Games</h2>
+<% end %>
+
+<% if @games.any? %>
+  <div class="games">
+    <% @games.each do |game| %>
+      <article class="game-card">
+        <% if game.header_image_url.present? %>
+          <%= image_tag game.header_image_url,
+                        alt: "#{game.title} header image",
+                        width: 460 %>
+        <% end %>
+
+        <h2>
+          <%= link_to game.title, game_path(game) %>
+        </h2>
+
+        <% if game.category.present? %>
+          <p>
+            Category:
+            <%= link_to game.category.name,
+                        games_path(category_id: game.category.id) %>
+          </p>
+        <% end %>
+
+        <% if game.genres.any? %>
+          <p>
+            Genres:
+            <%= game.genres.map(&:name).join(", ") %>
+          </p>
+        <% end %>
+
+        <% if game.description.present? %>
+          <p><%= truncate(game.description, length: 160) %></p>
+        <% end %>
+
+        <p>
+          <% if game.on_sale? %>
+            <span>
+              Regular price:
+              <del><%= number_to_currency(game.price) %></del>
+            </span>
+
+            Sale price:
+            <%= number_to_currency(game.current_price) %>
+          <% else %>
+            <%= number_to_currency(game.current_price) %>
+          <% end %>
+        </p>
+
+        <%= link_to "View Game", game_path(game) %>
+      </article>
+    <% end %>
+  </div>
+<% else %>
+  <% if @selected_category.present? %>
+    <p>No games are available in this category.</p>
+  <% else %>
+    <p>No games are available.</p>
+  <% end %>
 <% end %>

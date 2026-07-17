@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "games/index"
-  get "games/show"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -1,5 +1,5 @@
 <article class="game-details">
-  <h1><%= @game.tile %></h1>
+  <h1><%= @game.title %></h1>
 
   <% if @game.category.present? %>
   <p>Category: <%= @game.category.name %></p>
@@ -18,7 +18,7 @@
   <% end %>
 
   <% if @game.release_date.present? %>
-  <p>Release Date: <%= @game.release_date.strtim("%B %-d, %Y") %></p>
+  <p>Release Date: <%= @game.release_date.strftime("%B %-d, %Y") %></p>
   <% end %>
 
   <div>

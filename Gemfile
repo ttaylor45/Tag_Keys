@@ -29,6 +29,8 @@ gem "solid_queue"
 gem "solid_cable"
 gem "faker", "~> 2.19"
 
+gem "httparty"
+
 gem "devise"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
