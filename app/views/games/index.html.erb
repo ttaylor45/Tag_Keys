@@ -1,5 +1,28 @@
 <h1>Games</h1>
 
+<section class="games-search">
+  <h2>Search Games</h2>
+
+  <%= form_with url: games_path, method: :get, local: true do |form| %>
+
+  <div>
+    <%= form.label :query, "Search by title" %>
+
+    <%= form.text_field :query, value: @query, placeholder: "Enter Game Title or keyword" %>
+  </div>
+  <div>
+    <%= label_tag :category_id, "Category" %>
+
+    <%= select_tag :category_id, options_from_collection_for_select( @categories, :id, :name, params[:category_id] ), include_blank: "All Categories" %>
+  </div>
+  <div>
+    <%= form.submit "search" %>
+
+    <%= link_to "Clear Search", games_path %>
+  </div>
+  <% end %>
+</section>
+
 <nav class="category-navigation">
   <h2>Browse by Category</h2>
 
@@ -14,8 +37,15 @@
   <% end %>
 </nav>
 
-<% if @selected_category.present? %>
+<% if @selected_category.present? && @query.present? %>
+  <h2>
+    Search results for "<%= @query %>"
+    in <%= @selected_category.name %>
+  </h2>
+<% elsif @selected_category.present? %>
   <h2><%= @selected_category.name %> Games</h2>
+<% elsif @query.present? %>
+  <h2>Search results for "<%= @query %>"</h2>
 <% else %>
   <h2>All Games</h2>
 <% end %>
@@ -72,7 +102,14 @@
     <% end %>
   </div>
 <% else %>
-  <% if @selected_category.present? %>
+  <% if @query.present? && @selected_category.present? %>
+    <p>
+      No games matched "<%= @query %>" in
+      <%= @selected_category.name %>.
+    </p>
+  <% elsif @query.present? %>
+    <p>No games matched "<%= @query %>".</p>
+  <% elsif @selected_category.present? %>
     <p>No games are available in this category.</p>
   <% else %>
     <p>No games are available.</p>
