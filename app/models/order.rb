@@ -10,4 +10,40 @@ class Order < ApplicationRecord
   validates :order_number, presence: true, uniqueness: true
   validates :address_line_1, :city, :postal_code, :province_name, presence: true
   validates :subtotal, :gst_amount, :pst_amount, :hst_amount, :tax_total, :grand_total, numericality: { greater_than_or_equal_to: 0 }
+
+def self.ransackable_attributes(auth_object = nil)
+  [
+    "id",
+    "user_id",
+    "province_id",
+    "order_number",
+    "status",
+    "subtotal",
+    "gst_rate",
+    "pst_rate",
+    "hst_rate",
+    "gst_amount",
+    "pst_amount",
+    "hst_amount",
+    "tax_total",
+    "grand_total",
+    "address_line_1",
+    "address_line_2",
+    "city",
+    "postal_code",
+    "province_name",
+    "paid_at",
+    "created_at",
+    "updated_at"
+  ]
+end
+
+def self.ransackable_associations(auth_object = nil)
+  [
+    "user",
+    "province",
+    "order_items",
+    "payment"
+  ]
+end
 end

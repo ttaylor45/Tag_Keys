@@ -242,3 +242,4 @@ puts "DLCs: #{Game.joins(:category).where(categories: { name: "DLC" }).count}"
 puts "Bundles: #{Game.joins(:category).where(categories: { name: "Bundle" }).count}"
 puts "Total products: #{Game.count}"
 puts "Editable pages: #{PageContent.count}"
+User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

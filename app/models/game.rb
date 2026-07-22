@@ -28,6 +28,30 @@ class Game < ApplicationRecord
     on_sale? ? sale_price : price
   end
 
+def self.ransackable_attributes(auth_object = nil)
+  [
+    "active",
+    "category_id",
+    "created_at",
+    "description",
+    "developer",
+    "featured",
+    "header_image_url",
+    "id",
+    "price",
+    "publisher",
+    "release_date",
+    "sale_price",
+    "steam_app_id",
+    "title",
+    "updated_at"
+  ]
+end
+
+def self.ransackable_associations(auth_object = nil)
+  [ "category" ]
+end
+
   private
 
   def sale_price_must_be_lower_than_price
