@@ -4,10 +4,20 @@ ActiveAdmin.register Game do
    #
    # Uncomment all parameters which should be permitted for assignment
    #
-   permit_params :steam_app_id, :category_id, :title, :description, :price, :sale_price, :developer, :publisher, :release_date, :active, :featured, :header_image_url
+   permit_params :steam_app_id, :category_id, :title, :description, :price, :sale_price, :developer, :publisher, :release_date, :active, :featured, :header_image_url, :image
     index do
     selectable_column
     id_column
+    column "Image" do |game|
+      if game.image.attached?
+        image_tag game.image, style: "width: 120px; height: auto;"
+      elsif game.header_image_url.present?
+        image_tag game.header_image_url,
+          style: "width: 120px; height: auto;"
+      else
+        "No Image"
+      end
+    end
     column :title
     column :category
     column :price
@@ -33,6 +43,8 @@ ActiveAdmin.register Game do
       f.input :price
       f.input :sale_price
       f.input :release_date
+      f.input :header_image_url
+      f.input :image, as: :file
       f.input :active
       f.input :featured
     end
@@ -43,6 +55,17 @@ ActiveAdmin.register Game do
   show do
     attributes_table do
       row :id
+      row "Image" do |game|
+        if game.image.attached?
+          image_tag game.image,
+                    style: "max-width: 500px; height: auto;"
+        elsif game.header_image_url.present?
+          image_tag game.header_image_url,
+                    style: "max-width: 500px; height: auto;"
+        else
+          "No image available"
+        end
+      end
       row :title
       row :description
       row :category
@@ -52,6 +75,7 @@ ActiveAdmin.register Game do
       row :price
       row :sale_price
       row :release_date
+      row :header_image_url
       row :active
       row :featured
       row :created_at

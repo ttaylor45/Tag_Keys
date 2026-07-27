@@ -1,5 +1,6 @@
 class Game < ApplicationRecord
   belongs_to :category
+  has_one_attached :image
   has_many :game_genres, dependent: :destroy
   has_many :genres, through: :game_genres
   has_many :cart_items, dependent: :restrict_with_exception
