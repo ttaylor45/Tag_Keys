@@ -1,0 +1,9 @@
+<section class="content-page">
+  <h1><%= @page_content.title %></h1>
+
+  <div class="content-page-body">
+    <%= simple_format(@page_content.body) %>
+  </div>
+
+  <%= link_to "Back to Store", root_path %>
+</section>

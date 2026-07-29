@@ -14,5 +14,15 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "storefront#index"
 
+    get "/about",
+    to: "pages#show",
+    defaults: { page_key: "about" },
+    as: :about
+
+get "/contact",
+    to: "pages#show",
+    defaults: { page_key: "contact" },
+    as: :contact
+
   resources :games, only: [ :index, :show ]
 end
