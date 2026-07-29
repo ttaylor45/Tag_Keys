@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     authenticate_user!
 
     unless current_user&.admin?
-      redirect_to root_path, alert: "You are not authorized to reach the dashbaord!"
+      redirect_to root_path, alert: "You are not authorized to reach the dashboard!"
     end
   end
 
@@ -24,8 +24,15 @@ class ApplicationController < ActionController::Base
     )
 
     devise_parameter_sanitizer.permit(
-      :account_update, keys: [ :username, :first_name, :last_name, :address_line, :address_line_2,
+      :account_update, keys: [ :username, :first_name, :last_name, :address_line_1, :address_line_2,
     :city, :postal_code, :province_id ]
     )
+  end
+
+  private
+
+  def current_cart
+    return unless user_signed_in?
+    @current_cart ||= current_user.cart || current_user.create_cart!
   end
 end
