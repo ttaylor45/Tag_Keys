@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  helper_method :current_cart
+
   def authenticate_admin_user!
     authenticate_user!
 
@@ -33,6 +35,13 @@ class ApplicationController < ActionController::Base
 
   def current_cart
     return unless user_signed_in?
-    @current_cart ||= current_user.cart || current_user.create_cart!
+
+    cart = Cart.find_by(id: session[:cart_id])
+
+    if cart.nil? || cart.user_id != current_user.id
+      cart = current_user.cart || current_user.create_cart!
+      session[:cart_id] = cart.id
+    end
+    cart
   end
 end

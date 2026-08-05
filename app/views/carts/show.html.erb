@@ -1,2 +1,35 @@
-<h1>Carts#show</h1>
-<p>Find me in app/views/carts/show.html.erb</p>
+<h1>Your Cart</h1>
+
+<% if @cart_items.any? %>
+<table>
+  <thead>
+    <tr>
+      <th>Game</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+      <th>Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cart_items.each do |item| %>
+    <tr>
+      <td> <%= link_to item.game.title, game_path(item.game) %></td>
+      <td> <%= number_to_currency(item.game.current_price) %></td>
+      <td><%= form_with model: item, url: cart_item_path(item), method: :patch do |form| %>
+        <%= form.number_field :quantity, min: 1, required: true %>
+        <%= form.submit "Update Quantity" %>
+      <% end %>
+      </td>
+      <td> <%= number_to_currency(item.subtotal) %></td>
+      <td> <%= button_to "remove", cart_item_path(item), method: :delete, data: {turbo_confirm: "Remove #{item.game.title} from your cart?"} %></td>
+    </tr>
+    <% end%>
+  </tbody>
+</table>
+<p>SubTotal: <%= number_to_currency(@cart.subtotal) %></p>
+<% else %>
+<p>Your cart is empty.</p>
+<% end %>
+
+<%= link_to "Continue Shopping", games_path %>

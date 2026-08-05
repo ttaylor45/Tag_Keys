@@ -7,7 +7,16 @@
     <li><%= link_to "About", about_path %></li>
     <li><%= link_to "Contact", contact_path %></li>
     <li>Categories</li>
-    <li>Cart</li>
+    <% if user_signed_in? %>
+  <li>
+    <%= link_to "Cart (#{current_cart.total_quantity})",
+                cart_path %>
+  </li>
+<% else %>
+  <li>
+    <%= link_to "Cart", new_user_session_path %>
+  </li>
+<% end %>
 
     <% if user_signed_in? %>
       <% if current_user.admin? %>
