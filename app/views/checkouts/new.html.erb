@@ -1,0 +1,82 @@
+<h1>Checkout</h1>
+<section>
+  <h2> Order Summary</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Game</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @cart_items.each do |item| %>
+      <tr>
+        <td><%= item.game.title %></td>
+        <td><%= number_to_currency(item.game.current_price) %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency(item.subtotal) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p>Subtotal: <%= number_to_currency(@cart.subtotal) %></p>
+
+</section>
+
+<section>
+  <h2>Billing Address</h2>
+
+  <%= form_with url: checkout_path, method: :post do |form| %>
+  <div>
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name, value: current_user.first_name, required: true%>
+  </div>
+
+  <div>
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name, value: current_user.last_name, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :address_line_1, "Address"%>
+    <%= form.text_field :address_line_1, value: current_user.address_line_1, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :address_line_2, "Apartment, suite, etc."%>
+    <%= form.text_field :address_line_2, value: current_user.address_line_2 %>
+  </div>
+
+  <div>
+    <%= form.label :city %>
+    <%= form.text_field :city, value: current_user.city, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :province_id, "Province or Territory" %>
+    <%= form.collection_select(:province_id, @provinces, :id, :name, { selected: current_user.province_id, include_blank: "Select a province or territory" }, { required: true }) %>
+  </div>
+
+  <div>
+    <%= form.label :postal_code, "Postal Code"%>
+    <%= form.text_field :postal_code, value: current_user.postal_code, required: true %>
+  </div>
+
+  <div>
+    <%= form.check_box :save_address, checked: true %>
+    <%= form.label :save_address, "Save this address to my account" %>
+  </div>
+
+  <%= form.submit "Review and Place Order" %>
+
+  <% end %>
+
+</section>
+
+<%= link_to "Back to Cart", cart_path %>
+

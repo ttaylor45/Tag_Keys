@@ -28,6 +28,8 @@
   </tbody>
 </table>
 <p>SubTotal: <%= number_to_currency(@cart.subtotal) %></p>
+
+<p><%= link_to "Proceed to Checkout", new_checkout_path%></p>
 <% else %>
 <p>Your cart is empty.</p>
 <% end %>

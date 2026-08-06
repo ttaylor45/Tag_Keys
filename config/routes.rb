@@ -25,6 +25,8 @@ get "/contact",
     as: :contact
 
   resources :games, only: [ :index, :show ]
-  resource :cart, only: [:show]
-  resources :cart_items, only: [:create, :update, :destroy]
+  resource :cart, only: [ :show ]
+  resources :cart_items, only: [ :create, :update, :destroy]
+
+  resource :checkout, only: [ :new, :create ]
 end
