@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "orders/index"
+  get "orders/show"
   devise_for :users
   ActiveAdmin.routes(self)
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -29,4 +31,5 @@ get "/contact",
   resources :cart_items, only: [ :create, :update, :destroy]
 
   resource :checkout, only: [ :new, :create ]
+  resources :orders, only: [ :index, :show ]
 end

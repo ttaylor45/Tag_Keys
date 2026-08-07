@@ -1,0 +1,104 @@
+<h1>Order Confirmation</h1>
+
+<p>
+  <strong>Order number:</strong>
+  <%= @order.order_number %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @order.status.humanize %>
+</p>
+
+<p>
+  <strong>Order date:</strong>
+  <%= @order.created_at.strftime("%B %-d, %Y at %-I:%M %p") %>
+</p>
+
+<section>
+  <h2>Billing Address</h2>
+
+  <p>
+    <%= @order.address_line_1 %><br>
+
+    <% if @order.address_line_2.present? %>
+      <%= @order.address_line_2 %><br>
+    <% end %>
+
+    <%= @order.city %>,
+    <%= @order.province_name %><br>
+
+    <%= @order.postal_code %>
+  </p>
+</section>
+
+<section>
+  <h2>Order Items</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Game</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Line Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td><%= item.product_title %></td>
+          <td><%= number_to_currency(item.unit_price) %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.line_total) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Invoice Totals</h2>
+
+  <p>
+    Subtotal:
+    <%= number_to_currency(@order.subtotal) %>
+  </p>
+
+  <% if @order.gst_amount.positive? %>
+    <p>
+      GST (<%= number_to_percentage(@order.gst_rate * 100, precision: 2) %>):
+      <%= number_to_currency(@order.gst_amount) %>
+    </p>
+  <% end %>
+
+  <% if @order.pst_amount.positive? %>
+    <p>
+      PST (<%= number_to_percentage(@order.pst_rate * 100, precision: 2) %>):
+      <%= number_to_currency(@order.pst_amount) %>
+    </p>
+  <% end %>
+
+  <% if @order.hst_amount.positive? %>
+    <p>
+      HST (<%= number_to_percentage(@order.hst_rate * 100, precision: 2) %>):
+      <%= number_to_currency(@order.hst_amount) %>
+    </p>
+  <% end %>
+
+  <p>
+    Tax total:
+    <%= number_to_currency(@order.tax_total) %>
+  </p>
+
+  <p>
+    <strong>
+      Grand total:
+      <%= number_to_currency(@order.grand_total) %>
+    </strong>
+  </p>
+</section>
+
+<%= link_to "View My Orders", orders_path %>
+<%= link_to "Continue Shopping", games_path %>
