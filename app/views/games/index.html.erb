@@ -1,3 +1,64 @@
+<div class="games-page">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h1 class="mb-1">Games</h1>
+      <p class="text-secondary mb-0">
+        Search and browse available Steam game keys.
+      </p>
+    </div>
+  </div>
+
+<div class="search-panel mb-4">
+  <%= form_with url: games_path,
+                method: :get,
+                local: true,
+                class: "row g-3 align-items-end" do |form| %>
+
+    <div class="col-12 col-md-5">
+      <%= form.label :query,
+                     "Search Games",
+                     class: "form-label" %>
+
+      <%= form.text_field :query,
+                          value: params[:query],
+                          placeholder: "Search by title or description...",
+                          class: "form-control" %>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <%= form.label :category_id,
+                     "Category",
+                     class: "form-label" %>
+
+      <%= form.collection_select(
+            :category_id,
+            @categories,
+            :id,
+            :name,
+            {
+              selected: params[:category_id],
+              include_blank: "All Categories"
+            },
+            {
+              class: "form-select"
+            }
+          ) %>
+    </div>
+
+    <div class="col-12 col-md-3 d-grid">
+      <%= form.submit "Search",
+                      class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <% if params[:query].present? || params[:category_id].present? %>
+    <div class="mt-3">
+      <%= link_to "Clear Search",
+                  games_path,
+                  class: "btn btn-outline-light btn-sm" %>
+    </div>
+  <% end %>
+</div>
 <div class="row g-4 mt-3">
   <% @games.each do |game| %>
     <div class="col-12 col-md-6 col-lg-4">
