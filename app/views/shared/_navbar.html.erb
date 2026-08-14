@@ -1,47 +1,85 @@
-<nav>
-  <%= link_to "Tag Keys", root_path %>
+<nav class="navbar navbar-expand-lg navbar-dark galaxy-navbar">
+  <div class="container">
+    <%= link_to "TAG KEYS", root_path, class: "navbar-brand fw-bold" %>
 
-  <ul>
-    <li><%= link_to "Home", root_path %></li>
-    <li><%= link_to "Games", games_path %></li>
-    <li><%= link_to "About", about_path %></li>
-    <li><%= link_to "Contact", contact_path %></li>
-    <li>Categories</li>
-    <% if user_signed_in? %>
-  <li>
-    <%= link_to "Cart (#{current_cart.total_quantity})",
-                cart_path %>
-  </li>
-<% else %>
-  <li>
-    <%= link_to "Cart", new_user_session_path %>
-  </li>
-<% end %>
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-<% if user_signed_in? %>
-  <li>
-    <%= link_to "My Account",
-                edit_user_registration_path %>
-  </li>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-  <li>
-  <%= link_to "My Orders", orders_path %>
-</li>
+        <li class="nav-item">
+          <%= link_to "Home", root_path, class: "nav-link" %>
+        </li>
 
-  <% if current_user.admin? %>
-    <li>
-      <%= link_to "Admin Dashboard", admin_root_path %>
-    </li>
-  <% end %>
+        <li class="nav-item">
+          <%= link_to "Games", games_path, class: "nav-link" %>
+        </li>
 
-  <li>
-    <%= button_to "Log out",
-                  destroy_user_session_path,
-                  method: :delete %>
-  </li>
-<% else %>
-      <li><%= link_to "Register", new_user_registration_path %></li>
-      <li><%= link_to "Log in", new_user_session_path %></li>
-    <% end %>
-  </ul>
+        <li class="nav-item">
+          <%= link_to "About", about_path, class: "nav-link" %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to "Contact", contact_path, class: "nav-link" %>
+        </li>
+
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Cart (#{current_cart.total_quantity})",
+                        cart_path,
+                        class: "nav-link" %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to "My Orders",
+                        orders_path,
+                        class: "nav-link" %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to "My Account",
+                        edit_user_registration_path,
+                        class: "nav-link" %>
+          </li>
+
+          <% if current_user.admin? %>
+            <li class="nav-item">
+              <%= link_to "Admin Dashboard",
+                          admin_root_path,
+                          class: "nav-link text-warning" %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <% if user_signed_in? %>
+          <span class="navbar-text me-2">
+            <%= current_user.username %>
+          </span>
+
+          <%= button_to "Log out",
+                        destroy_user_session_path,
+                        method: :delete,
+                        class: "btn btn-outline-light btn-sm" %>
+        <% else %>
+          <%= link_to "Register",
+                      new_user_registration_path,
+                      class: "btn btn-outline-info btn-sm" %>
+
+          <%= link_to "Log in",
+                      new_user_session_path,
+                      class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </nav>

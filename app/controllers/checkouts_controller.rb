@@ -17,6 +17,8 @@ class CheckoutsController < ApplicationController
       province: province,
       order_number: generate_order_number,
       status: :pending,
+      first_name: checkout_params[:first_name],
+      last_name: checkout_params[:last_name],
       address_line_1: checkout_params[:address_line_1],
       address_line_2: checkout_params[:address_line_2],
       city: checkout_params[:city],

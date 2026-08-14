@@ -1,29 +1,69 @@
-<h1>My Orders</h1>
+<div class="orders-page">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">My Orders</h1>
 
-<% if @orders.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Order Number</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Total</th>
-        <th></th>
-      </tr>
-    </thead>
+    <%= link_to "Continue Shopping",
+                games_path,
+                class: "btn btn-outline-light" %>
+  </div>
 
-    <tbody>
-      <% @orders.each do |order| %>
-        <tr>
-          <td><%= order.order_number %></td>
-          <td><%= order.created_at.strftime("%B %-d, %Y") %></td>
-          <td><%= order.status.humanize %></td>
-          <td><%= number_to_currency(order.grand_total) %></td>
-          <td><%= link_to "View Order", order_path(order) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>You have not placed any orders yet.</p>
-<% end %>
+  <% if @orders.any? %>
+    <div class="orders-panel">
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Order Number</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @orders.each do |order| %>
+              <tr>
+                <td class="fw-bold text-info">
+                  <%= order.order_number %>
+                </td>
+
+                <td>
+                  <%= order.created_at.strftime("%B %-d, %Y") %>
+                </td>
+
+                <td>
+                  <span class="badge rounded-pill text-bg-primary">
+                    <%= order.status.humanize %>
+                  </span>
+                </td>
+
+                <td class="fw-bold">
+                  <%= number_to_currency(order.grand_total) %>
+                </td>
+
+                <td>
+                  <%= link_to "View Order",
+                              order_path(order),
+                              class: "btn btn-outline-info btn-sm" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <div class="empty-orders-panel text-center">
+      <h2>No orders yet</h2>
+
+      <p class="text-secondary">
+        Your completed purchases will appear here.
+      </p>
+
+      <%= link_to "Browse Games",
+                  games_path,
+                  class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

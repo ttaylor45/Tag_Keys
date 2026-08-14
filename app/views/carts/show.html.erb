@@ -1,37 +1,102 @@
-<h1>Your Cart</h1>
+<div class="cart-page">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Your Cart</h1>
 
-<% if @cart_items.any? %>
-<table>
-  <thead>
-    <tr>
-      <th>Game</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Total</th>
-      <th>Remove</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @cart_items.each do |item| %>
-    <tr>
-      <td> <%= link_to item.game.title, game_path(item.game) %></td>
-      <td> <%= number_to_currency(item.game.current_price) %></td>
-      <td><%= form_with model: item, url: cart_item_path(item), method: :patch do |form| %>
-        <%= form.number_field :quantity, min: 1, required: true %>
-        <%= form.submit "Update Quantity" %>
-      <% end %>
-      </td>
-      <td> <%= number_to_currency(item.subtotal) %></td>
-      <td> <%= button_to "remove", cart_item_path(item), method: :delete, data: {turbo_confirm: "Remove #{item.game.title} from your cart?"} %></td>
-    </tr>
-    <% end%>
-  </tbody>
-</table>
-<p>SubTotal: <%= number_to_currency(@cart.subtotal) %></p>
+    <%= link_to "Continue Shopping",
+                games_path,
+                class: "btn btn-outline-light" %>
+  </div>
 
-<p><%= link_to "Proceed to Checkout", new_checkout_path%></p>
-<% else %>
-<p>Your cart is empty.</p>
-<% end %>
+  <% if @cart_items.any? %>
+    <div class="cart-panel">
 
-<%= link_to "Continue Shopping", games_path %>
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @cart_items.each do |item| %>
+              <tr>
+                <td>
+                  <%= link_to item.game.title,
+                              game_path(item.game),
+                              class: "cart-game-link" %>
+                </td>
+
+                <td>
+                  <%= number_to_currency(item.game.current_price) %>
+                </td>
+
+                <td>
+                  <%= form_with model: item,
+                                url: cart_item_path(item),
+                                method: :patch,
+                                class: "d-flex gap-2 align-items-center flex-wrap" do |form| %>
+
+                    <%= form.number_field :quantity,
+                                          min: 1,
+                                          required: true,
+                                          class: "form-control cart-quantity-input" %>
+
+                    <%= form.submit "Update",
+                                    class: "btn btn-outline-info btn-sm" %>
+                  <% end %>
+                </td>
+
+                <td class="fw-bold text-info">
+                  <%= number_to_currency(item.subtotal) %>
+                </td>
+
+                <td>
+                  <%= button_to "Remove",
+                                cart_item_path(item),
+                                method: :delete,
+                                class: "btn btn-outline-danger btn-sm",
+                                data: {
+                                  turbo_confirm:
+                                    "Remove #{item.game.title} from your cart?"
+                                } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cart-summary mt-4">
+        <div>
+          <span class="cart-summary-label">Subtotal</span>
+          <span class="cart-summary-total">
+            <%= number_to_currency(@cart.subtotal) %>
+          </span>
+        </div>
+
+        <%= link_to "Proceed to Checkout",
+                    new_checkout_path,
+                    class: "btn btn-primary btn-lg mt-3 w-100" %>
+      </div>
+
+    </div>
+
+  <% else %>
+    <div class="empty-cart-panel text-center">
+      <h2>Your cart is empty</h2>
+
+      <p class="text-secondary">
+        Browse the store and add some games to get started.
+      </p>
+
+      <%= link_to "Browse Games",
+                  games_path,
+                  class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

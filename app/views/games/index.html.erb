@@ -1,117 +1,68 @@
-<h1>Games</h1>
+<div class="row g-4 mt-3">
+  <% @games.each do |game| %>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card galaxy-game-card h-100">
 
-<section class="games-search">
-  <h2>Search Games</h2>
+        <% if game.image.attached? %>
+          <%= image_tag game.image.variant(
+                resize_to_fill: [600, 340]
+              ),
+              class: "card-img-top game-card-image",
+              alt: game.title %>
 
-  <%= form_with url: games_path, method: :get, local: true do |form| %>
-
-  <div>
-    <%= form.label :query, "Search by title" %>
-
-    <%= form.text_field :query, value: @query, placeholder: "Enter Game Title or keyword" %>
-  </div>
-  <div>
-    <%= label_tag :category_id, "Category" %>
-
-    <%= select_tag :category_id, options_from_collection_for_select( @categories, :id, :name, params[:category_id] ), include_blank: "All Categories" %>
-  </div>
-  <div>
-    <%= form.submit "search" %>
-
-    <%= link_to "Clear Search", games_path %>
-  </div>
-  <% end %>
-</section>
-
-<nav class="category-navigation">
-  <h2>Browse by Category</h2>
-
-  <%= link_to "All Games",
-              games_path,
-              class: @selected_category.nil? ? "active-category" : nil %>
-
-  <% @categories.each do |category| %>
-    <%= link_to category.name,
-                games_path(category_id: category.id),
-                class: @selected_category == category ? "active-category" : nil %>
-  <% end %>
-</nav>
-
-<% if @selected_category.present? && @query.present? %>
-  <h2>
-    Search results for "<%= @query %>"
-    in <%= @selected_category.name %>
-  </h2>
-<% elsif @selected_category.present? %>
-  <h2><%= @selected_category.name %> Games</h2>
-<% elsif @query.present? %>
-  <h2>Search results for "<%= @query %>"</h2>
-<% else %>
-  <h2>All Games</h2>
-<% end %>
-
-<% if @games.any? %>
-  <div class="games">
-    <% @games.each do |game| %>
-      <article class="game-card">
-        <% if game.header_image_url.present? %>
+        <% elsif game.header_image_url.present? %>
           <%= image_tag game.header_image_url,
-                        alt: "#{game.title} header image",
-                        width: 460 %>
+                        class: "card-img-top game-card-image",
+                        alt: game.title %>
         <% end %>
 
-        <h2>
-          <%= link_to game.title, game_path(game) %>
-        </h2>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">
+            <%= game.title %>
+          </h5>
 
-        <% if game.category.present? %>
-          <p>
-            Category:
-            <%= link_to game.category.name,
-                        games_path(category_id: game.category.id) %>
-          </p>
-        <% end %>
-
-        <% if game.genres.any? %>
-          <p>
-            Genres:
-            <%= game.genres.map(&:name).join(", ") %>
-          </p>
-        <% end %>
-
-        <% if game.description.present? %>
-          <p><%= truncate(game.description, length: 160) %></p>
-        <% end %>
-
-        <p>
-          <% if game.on_sale? %>
-            <span>
-              Regular price:
-              <del><%= number_to_currency(game.price) %></del>
-            </span>
-
-            Sale price:
-            <%= number_to_currency(game.current_price) %>
-          <% else %>
-            <%= number_to_currency(game.current_price) %>
+          <% if game.category.present? %>
+            <p class="text-info small mb-2">
+              <%= game.category.name %>
+            </p>
           <% end %>
-        </p>
 
-        <%= link_to "View Game", game_path(game) %>
-      </article>
-    <% end %>
-  </div>
-<% else %>
-  <% if @query.present? && @selected_category.present? %>
-    <p>
-      No games matched "<%= @query %>" in
-      <%= @selected_category.name %>.
-    </p>
-  <% elsif @query.present? %>
-    <p>No games matched "<%= @query %>".</p>
-  <% elsif @selected_category.present? %>
-    <p>No games are available in this category.</p>
-  <% else %>
-    <p>No games are available.</p>
+          <p class="card-text">
+            <%= truncate(game.description, length: 120) %>
+          </p>
+
+          <div class="mt-auto">
+            <% if game.on_sale? %>
+              <p class="mb-2">
+                <span class="text-secondary text-decoration-line-through">
+                  <%= number_to_currency(game.price) %>
+                </span>
+
+                <span class="text-success fw-bold ms-2">
+                  <%= number_to_currency(game.current_price) %>
+                </span>
+              </p>
+            <% else %>
+              <p class="fw-bold mb-2">
+                <%= number_to_currency(game.current_price) %>
+              </p>
+            <% end %>
+
+            <div class="d-flex gap-2 flex-wrap">
+              <%= link_to "View Game",
+                          game_path(game),
+                          class: "btn btn-primary" %>
+
+              <% if user_signed_in? %>
+                <%= button_to "Add to Cart",
+                              cart_items_path(game_id: game.id),
+                              method: :post,
+                              class: "btn btn-outline-info" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
-<% end %>
+</div>
