@@ -27,7 +27,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
-gem "faker", "~> 2.19"
+gem "faker", "~> 3.8"
 
 gem "httparty"
 
